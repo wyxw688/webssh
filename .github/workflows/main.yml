@@ -1,0 +1,38 @@
+name: Build webssh Commit
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    typrs: [websshpull]
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Sync webssh
+      uses: actions/checkout@v3
+      with:
+        repository: wyxw688/webssh
+        ref: "master"
+        path: go/websshrpg
+        ssh-key: ${{ secrets.GAYHUB_TOKEN }}
+        fetch-depth: 0
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: "1.20"
+        check-latest: true
+
+    - name: Go Tidy
+      run: cd go/websshrpg && go mod tidy
+
+    - name: Build
+      run: cd go/websshrpg && bash build.sh
+
+    - name: Upload Archive
+      uses: actions/upload-artifact@v4
+      with:
+        name: websshwyyx
+        path: go/websshrpg/build/
