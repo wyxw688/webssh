@@ -29,7 +29,7 @@ jobs:
       run: cd go/websshrpg && go mod tidy
 
     - name: Build
-      run: cd go/websshrpg && bash buildx.sh
+      run: cd go/websshrpg && bash build.sh
 
     - name: Upload Archive
       uses: actions/upload-artifact@v4
